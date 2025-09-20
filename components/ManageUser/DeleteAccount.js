@@ -1,40 +1,42 @@
-/// old /components/ManageUser/ResetPassword.js
-
-// /components/ManageUser/ResetPassword.js
 import { useState } from "react";
 import { useRouter } from "next/router";
-import styles from "../../styles/ManageUser/ResetPassword.module.css";
+import styles from "../../styles/ManageUser/DeleteAccount.module.css";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../reducers/user";
 
-const ResetPassword = ({ token }) => {
+export default function DeleteAccount() {
+	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
+	const dispatch = useDispatch();
 
-	const handleResetPassword = async () => {
-		if (!password || password.length < 3) {
-			alert("Please enter a password with at least 3 characters.");
+	const handleDeleteAccount = async () => {
+		if (!password || !email) {
+			alert("Please enter a password and email.");
 			return;
 		}
 
 		const response = await fetch(
-			`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/reset-password-with-new-password/`,
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/delete-account/`,
 			{
-				method: "POST",
+				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`,
 				},
-				body: JSON.stringify({ password }),
+				body: JSON.stringify({ password, email }),
 			}
 		);
 
 		if (response.ok) {
-			router.push("/forgot-password/reset-successful");
+			alert("Successfully deleted user");
+			dispatch(logoutUser());
+			router.push("/");
 		} else {
-			alert("Error resetting password. Please try again.");
+			alert("Error deleting account. Please try again.");
 		}
 	};
 
@@ -49,14 +51,27 @@ const ResetPassword = ({ token }) => {
 				/>
 			</div>
 			<div className={styles.divMainSub}>
-				<h1 className={styles.title}>Enter New Password:</h1>
+				<div className={styles.divTitle}>
+					<h1 className={styles.title}>Delete Account</h1>
+				</div>
 				<div className={styles.inputContainer}>
+					<h3>Email:</h3>
+					<input
+						// type={showPassword ? "text" : "password"}
+						className={styles.inputPassword}
+						onChange={(e) => setEmail(e.target.value)}
+						value={email}
+						placeholder="Email"
+					/>
+				</div>
+				<div className={styles.inputContainer}>
+					<h3>Password:</h3>
 					<input
 						type={showPassword ? "text" : "password"}
 						className={styles.inputPassword}
 						onChange={(e) => setPassword(e.target.value)}
 						value={password}
-						placeholder="New Password"
+						placeholder="Password"
 					/>
 					<FontAwesomeIcon
 						icon={showPassword ? faEyeSlash : faEye}
@@ -64,12 +79,10 @@ const ResetPassword = ({ token }) => {
 						onClick={() => setShowPassword(!showPassword)}
 					/>
 				</div>
-				<button className={styles.btnReset} onClick={handleResetPassword}>
-					Reset Password
+				<button className={styles.btnReset} onClick={handleDeleteAccount}>
+					Delete Account
 				</button>
 			</div>
 		</main>
 	);
-};
-
-export default ResetPassword;
+}
