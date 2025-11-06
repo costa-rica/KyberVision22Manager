@@ -8,8 +8,12 @@ import Image from "next/image";
 import TemplateView from "../../components/common/TemplateView";
 
 export default function Login() {
-  const [email, emailSetter] = useState("");
-  const [password, passwordSetter] = useState("");
+  const [email, emailSetter] = useState(
+    process.env.NEXT_PUBLIC_MODE == "workstation" ? "nrodrig1@gmail.com" : ""
+  );
+  const [password, passwordSetter] = useState(
+    process.env.NEXT_PUBLIC_MODE == "workstation" ? "test" : ""
+  );
   const dispatch = useDispatch();
   const router = useRouter();
   const userReducer = useSelector((state) => state.user);
