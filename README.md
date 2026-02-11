@@ -6,7 +6,7 @@
 
 ```
 NEXT_PUBLIC_API_BASE_URL=https://api.kv22.dashanddata.com
-NEXT_PUBLIC_APP_NAME=KyberVisionAPI22Manager
+NEXT_PUBLIC_NAME_APP=KyberVisionAPI22Manager
 ```
 
 ## install on server

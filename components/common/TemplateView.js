@@ -45,7 +45,7 @@ export default function TemplateView({ children }) {
         </div>
         <div className={styles.divHeaderMiddle}>
           <div className={styles.divHeaderMiddleName}>
-            {process.env.NEXT_PUBLIC_APP_NAME}
+            {process.env.NEXT_PUBLIC_NAME_APP}
           </div>
 
           <div className={styles.divHeaderMiddleApiUrl}>
