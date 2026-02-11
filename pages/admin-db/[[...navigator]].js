@@ -32,9 +32,7 @@ const AdminDbTable = () => {
         <p>Table Not Found</p>
       ));
     } else {
-      return import(`../../components/admin-db/${route}Table`).catch(
-        () => () => <p>Table Not Found</p>
-      );
+      return Promise.resolve(() => <p>Table Not Found</p>);
     }
   });
 
